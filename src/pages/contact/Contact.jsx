@@ -16,14 +16,14 @@ const Contact = () => {
             <i className="bi bi-telephone-fill"></i>
             Phone
           </div>
-          <p className="contact-item-text">123-456-789</p>
+          <p className="contact-item-text">93287025</p>
         </div>
         <div className="contact-item">
           <div className="contact-item-icon">
             <i className="bi bi-envelope-fill"></i>
             Email
           </div>
-          <p className="contact-item-text">info@fakeemail.com</p>
+          <p className="contact-item-text">benamierabelgace@gmail.com</p>
         </div>
       </div>
       <form onSubmit={e => e.preventDefault()} className="contact-form">

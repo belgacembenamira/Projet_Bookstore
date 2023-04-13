@@ -1,13 +1,28 @@
-import { Link } from "react-router-dom";
+/**
+    * @description      : 
+    * @author           : belgacem
+    * @group            : 
+    * @created          : 11/04/2023 - 12:10:47
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 11/04/2023
+    * - Author          : belgacem
+    * - Modification    : 
+**/
+// import crypto from 'crypto-browserify';
+
+import { Link, useNavigate } from "react-router-dom";
 import "./forms.css";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   // Form Submit Handler
   const formSubmitHandler = (event) => {
@@ -25,11 +40,26 @@ const Register = () => {
       return toast.error("Password is required");
     }
 
-    console.log({ email, password, username });
-    setEmail("");
-    setPassword("");
-    setUsername("");
+    // Send data to the server
+    axios.post("http://localhost:3000/register", {
+      email,
+      username,
+      password,
+    })
+      .then(() => {
+        // Display success message
+        toast.success("Registration successful!");
+        setEmail("");
+        setPassword("");
+        setUsername("");
+        navigate('/login');
+      })
+      .catch((error) => {
+        // Display error message
+        toast.error(error.message);
+      });
   };
+
   return (
     <div className="form-wrapper">
       <ToastContainer />

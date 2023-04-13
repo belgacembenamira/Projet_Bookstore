@@ -1,14 +1,55 @@
-import { Link } from "react-router-dom";
+/**
+    * @description      : 
+    * @author           : belgacem
+    * @group            : 
+    * @created          : 11/04/2023 - 21:34:00
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 11/04/2023
+    * - Author          : belgacem
+    * - Modification    : 
+**/
+import { Link, useNavigate } from "react-router-dom";
 import "./forms.css";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const Navigate = useNavigate();
+
 
   // Form Submit Handler
+  // const formSubmitHandler = (event) => {
+  //   event.preventDefault();
+
+  //   if (email.trim() === "") {
+  //     return toast.error("Email is required");
+  //   }
+
+  //   if (password.trim() === "") {
+  //     return toast.error("Password is required");
+  //   }
+
+  //   // Send login data to the server
+  //   axios.post("http://localhost:3000/login", {
+  //     email,
+  //     password,
+  //   })
+  //     .then(() => {
+  //       // Redirect to the /offre route
+  //        Navigate('./offre.jsx')
+
+  //     })
+  //     .catch((error) => {
+  //       // Display error message
+  //       toast.error(error.message);
+  //     });
+  // };
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
@@ -20,10 +61,21 @@ const Login = () => {
       return toast.error("Password is required");
     }
 
-    console.log({ email, password });
-    setEmail("");
-    setPassword("");
+    // Send login data to the server
+    axios.post("http://localhost:3000/login", {
+      email,
+      password,
+    })
+      .then(() => {
+        // Redirect to the /offre route
+        Navigate('/offre');
+      })
+      .catch((error) => {
+        // Display error message
+        toast.error(error.message);
+      });
   };
+
   return (
     <div className="form-wrapper">
       <ToastContainer />

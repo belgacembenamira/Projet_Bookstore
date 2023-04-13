@@ -1,9 +1,28 @@
+/**
+    * @description      : 
+    * @author           : belgacem
+    * @group            : 
+    * @created          : 12/04/2023 - 01:15:29
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 12/04/2023
+    * - Author          : belgacem
+    * - Modification    : 
+**/
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import BookStoreContext from "../../context/bookStorContext";
 import "./cart.css";
 
 const Cart = () => {
   const { cartInfo, removeFromCart, addToCart } = useContext(BookStoreContext);
+  const navigate = useNavigate(); // renommé history en navigate
+
+  const handlePayment = () => {
+    navigate("/commande"); // utilise a pour la redirection
+  };
+
   return (
     <div className="cart">
       <h1 className="cart-title">Your Shopping Cart</h1>
@@ -76,6 +95,10 @@ const Cart = () => {
               {cartInfo.reduce((acc, cur) => acc + cur.price * cur.quantity, 0).toFixed(2)}
             </span>
           </div>
+
+          <button type="button" onClick={handlePayment} className="cart-payment-button btn-danger m-5 p-5 text-center">
+            payer
+          </button>
         </div>
       </div>
     </div>

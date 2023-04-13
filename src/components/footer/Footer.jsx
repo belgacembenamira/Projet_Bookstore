@@ -39,15 +39,13 @@ const Footer = () => {
           <div className="footer-address-wrapper">
             <div className="footer-address-item">
               <i className="bi bi-geo-alt-fill"></i>
-              Iraq - Baghdad - Alrashid St
-            </div>
+Tunis            </div>
             <div className="footer-address-item">
               <i className="bi bi-telephone-fill"></i>
-              123-456-789
-            </div>
+93287025            </div>
             <div className="footer-address-item">
               <i className="bi bi-envelope-fill"></i>
-              info@fakeemail.com
+              benamierabelgacem@gmail.com
             </div>
           </div>
         </div>

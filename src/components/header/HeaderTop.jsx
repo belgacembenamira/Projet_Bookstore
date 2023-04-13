@@ -10,7 +10,7 @@ const HeaderTop = ({ setToggle, toggle }) => {
         {toggle ? <i className="bi bi-x"></i> : <i className="bi bi-list"></i>}
       </div>
       <div className="header-top-phone">
-        <i className="bi bi-telephone-fill"></i> 123-456-789
+        <i className="bi bi-telephone-fill"></i> 93287025
       </div>
       <div className="header-top-text">Welcome To Online Book Store</div>
       <Link to="/login" className="header-top-link">

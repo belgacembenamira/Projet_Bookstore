@@ -1,3 +1,15 @@
+/**
+    * @description      : 
+    * @author           : belgacem
+    * @group            : 
+    * @created          : 12/04/2023 - 06:15:46
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 12/04/2023
+    * - Author          : belgacem
+    * - Modification    : 
+**/
 import { useState } from "react";
 import "./header.css";
 import HeaderMiddle from "./HeaderMiddle";
