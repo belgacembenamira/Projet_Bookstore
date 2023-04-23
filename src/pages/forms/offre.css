@@ -1,93 +1,108 @@
-/* you can remove it and just use the card CSS */
-.container {
+body {
+    background: #EEEEEE;
+}
+
+.bronze {
+    background-color: #B0C4DE;
+}
+
+.bronze-text {
+    color: #B0C4DE;
+}
+
+.silver {
+    color: #fff;
+    background-color: #C0C0C0;
+}
+
+.gold {
+    color: #fff;
+    background-color: #FFD700;
+}
+
+.gold-text {
+    color: #FFD700;
+}
+
+.content .plan {
     position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgb(75, 53, 118);
-    background: linear-gradient(219deg,
-            rgba(75, 53, 118, 1) 33%,
-            rgba(248, 177, 60, 1) 100%);
-    font-family: "Roboto", sans-serif;
-    gap: 50px;
+    top: 30px;
+    background: rgba(255, 255, 255, 1);
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 7px;
+    color: #777;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.05);
+    -webkit-transition: all .3s ease-out;
+    transition: all .3s ease-out;
 }
 
-/* ======================================================== */
-.card {
-    transform-style: preserve-3d;
-    position: relative;
-    padding: 25px;
-    width: 350px;
-    height: 500px;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-    background: linear-gradient(25deg,
-            rgba(75, 53, 118, 1) 0%,
-            rgba(248, 177, 60, 1) 86%);
-    transition: all 0.1s ease;
+.content .plan.featured {
+    top: 0;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
-.sneaaker-img {
-    position: relative;
-    width: 90%;
-    transition: all 0.5s ease;
+.content .plan:hover,
+.content .plan.featured {
+    background: #5CC9DF;
+    color: #fff;
 }
 
-.title,
-.card p {
-    width: 100%;
-    color: rgb(220, 220, 220);
+.content .plan h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 0;
+    text-transform: uppercase;
 }
 
-.sizes-box {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 10px;
+.content .plan.featured h2 {
+    margin-bottom: 10px;
 }
 
-.sizes-box li {
-    list-style: none;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 30px;
-    padding: 0.5rem 1.5rem;
-    background-color: rgb(220, 220, 220);
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-        rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-        rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+.content .plan p {
+    margin-bottom: 5px;
+    font-weight: 400;
 }
 
-.sizes-box li:hover {
-    background-color: rgb(134, 134, 134);
+.content .plan .icon {
+    display: inline-block;
+    margin-bottom: 30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    font-size: 48px;
+    line-height: 120px;
+    -webkit-transition: all .3s ease-out;
+    transition: all .3s ease-out;
 }
 
-.button-box {
-    width: 100%;
+.content .plan.featured .icon,
+.content .plan:hover .icon {
+    color: #5cc9df;
+    background: #fff;
 }
 
-.purchase {
-    cursor: pointer;
-    width: 100%;
-    border-radius: 30px;
-    padding: 0.8rem 1.5rem;
-    font-weight: bold;
-    border: none;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    background-color: rgba(248, 177, 60, 1);
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-        rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-        rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+.content .plan .btn-pricing {
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-size: 16px;
+    padding: 10px 20px;
 }
 
-.purchase:hover {
-    background-color: rgb(222, 157, 54);
+.content .plan.featured .btn-pricing,
+.content .plan:hover .btn-pricing {
+    background: #fff;
+    color: #5CC9DF;
+}
+
+.content .plan .price {
+    font-size: 48px;
+    font-weight: 100;
+    line-height: 48px;
+    margin-bottom: 30px;
+}
+
+.content .plan.featured .price {
+    margin-bottom: 40px;
 }
