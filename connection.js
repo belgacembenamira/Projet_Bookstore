@@ -13,6 +13,7 @@
 // Importer les modules nécessaires
 const express = require('express');
 const mysql = require('mysql');
+const stripe = require('stripe')('sk_test_51MwFg1GRr5LN8XFFpv4lyuMd4hZRsQhBVp1xwXPMLu9GSPix42hk1KFyfeLHuZ7mxDOsSB1q4mxzHFt4ZRiF7UQm00RAuZhvJV');
 
 // Créer une application Express
 const app = express();
@@ -68,7 +69,10 @@ app.post('/register', (req, res) => {
         res.status(201).json({ message: 'Utilisateur enregistré avec succès' }); // Correction : renvoyer une réponse avec un code 201
     });
 });
-/************* */
+/************* 
+ * sk_test_51MwFg1GRr5LN8XFFpv4lyuMd4hZRsQhBVp1xwXPMLu9GSPix42hk1KFyfeLHuZ7mxDOsSB1q4mxzHFt4ZRiF7UQm00RAuZhvJV
+ * 
+*/
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -90,6 +94,72 @@ app.post('/login', (req, res) => {
         }
     );
 });
+const YOUR_DOMAIN = 'http://localhost:3000';
+
+
+
+// Route pour créer une nouvelle commande
+
+
+
+app.post('/commande', async (req, res) => {
+    try {
+        // Vérifier que les données envoyées sont valides
+        if (!req.body.name || !req.body.price || !req.body.numero_telephone || !req.body.adresse) {
+            throw new Error('Tous les champs sont obligatoires.');
+        }
+
+        // Créer une session de paiement avec Stripe
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [{
+                price_data: {
+                    currency: 'eur',
+                    product_data: {
+                        name: req.body.name,
+                        description: req.body.description,
+                    },
+                    unit_amount: req.body.price * 100,
+                },
+                quantity: 1,
+            }],
+            mode: 'payment',
+            success_url: `${YOUR_DOMAIN}/success`,
+            cancel_url: `${YOUR_DOMAIN}/canceled`,
+        });
+
+        // Insérer les détails de la commande dans la base de données
+        const sql = "INSERT INTO commande (name, price, numero_telephone, adresse) VALUES (?, ?, ?, ?)";
+        const values = [req.body.name, req.body.price, req.body.numero_telephone, req.body.adresse];
+        connection.query(sql, values, function (err, result) {
+            if (err) {
+                console.error("Erreur lors de l'insertion de la commande :", err);
+                throw err;
+            }
+            console.log("Commande insérée dans la base de données :", result);
+        });
+
+        // Retourner le client_secret de la session de paiement Stripe
+        res.json({ client_secret: session.client_secret });
+    } catch (err) {
+        console.error(err);
+        if (err.type === 'StripeCardError') {
+            // Le paiement a échoué en raison d'une carte invalide
+            res.status(400).json({ error: err.message });
+        } else {
+            // Une erreur s'est produite côté serveur
+            console.error("Erreur côté serveur :", err);
+            res.status(500).json({ error: 'Une erreur s\'est produite lors du traitement du paiement', message: err.message });
+        }
+    }
+});
+
+
+
+
+
+
+
 
 // Démarrer le serveur sur le port 3002
 app.listen(3000, () => {
