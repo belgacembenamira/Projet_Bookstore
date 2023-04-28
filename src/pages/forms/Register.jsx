@@ -41,7 +41,7 @@ const Register = () => {
     }
 
     // Send data to the server
-    axios.post("http://localhost:3000/register", {
+    axios.post("http://localhost:5000/register", {
       email,
       username,
       password,

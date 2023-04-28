@@ -62,7 +62,7 @@ const Login = () => {
     }
 
     // Send login data to the server
-    axios.post("http://localhost:3000/login", {
+    axios.post("http://localhost:5000/login", {
       email,
       password,
     })

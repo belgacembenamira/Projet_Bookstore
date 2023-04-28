@@ -31,7 +31,12 @@ import HomePage from "./pages/home/HomePage";
 import Offre from "./pages/forms/offre";
 import Commande from "./pages/cart/commande";
 import { useState } from "react";
-
+import ListUser from "./Admin/ListUser";
+import UpdateUser from "./Admin/UpdateUser";
+import DeleteUser from "./Admin/DeleteUser";
+import Admin from "./Admin/Amdin";
+import Commandes from "./Admin/Commandes";
+import CreateUser from "./Admin/CreateUser";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -57,6 +62,15 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/offre" element={<Offre />} />
         <Route path="/commande" element={<Commande />} />
+        <Route path="/admin/user" element={<ListUser />} />
+        {/* <Route path="/admin/user" element={<ListUser />} />
+        <Route path="/admin/user" element={<ListUser />} /> */}
+        <Route path="admin/user/modifier/:id" element={<UpdateUser />} />
+        <Route path="admin/user/supprimer/:id" element={<DeleteUser />} />
+        <Route path="admin/" element={<Admin />} />
+        <Route path="/admin/listecommande" element={<Commandes />} />
+        <Route path="/admin/usercreate" element={<CreateUser />} />
+
         {/* {isLoggedIn && <Route path="/offre" element={<Offre />} />} */}
       </Routes>
       <Footer />
