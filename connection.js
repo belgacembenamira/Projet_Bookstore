@@ -11,12 +11,23 @@
     * - Modification    : 
 **/
 // Importer les modules nécessaires
+// Importer les modules nécessaires
 const express = require('express');
 const mysql = require('mysql');
 const stripe = require('stripe')('sk_test_51MwFg1GRr5LN8XFFpv4lyuMd4hZRsQhBVp1xwXPMLu9GSPix42hk1KFyfeLHuZ7mxDOsSB1q4mxzHFt4ZRiF7UQm00RAuZhvJV');
 
+const bodyParser = require("body-parser");
+
 // Créer une application Express
 const app = express();
+const port = 5000
+app.use(express.json())
+const cors = require('cors');
+app.use(bodyParser.json());
+
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 
 // Configurer la connexion à la base de données
 const connection = mysql.createConnection({
@@ -39,35 +50,48 @@ connection.connect((err) => {
 // Parser le corps des requêtes HTTP au format JSON
 app.use(express.json());
 
-// Créer une API pour récupérer les données utilisateur
-app.get('/users', (req, res) => {
-    connection.query('SELECT * FROM utilisateur', (err, rows, fields) => {
-        if (err) {
-            console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
-            res.status(500).json({ error: 'Erreur interne du serveur', message: err.message });
-            return;
+// // Créer une API pour récupérer les données utilisateur
+// app.get('/users', (req, res) => {
+//     connection.query('SELECT * FROM utilisateur', (err, rows, fields) => {
+//         if (err) {
+//             console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
+//             res.status(500).json({ error: 'Erreur interne du serveur', message: err.message });
+//             return;
 
-        }
-        res.json(rows); // Correction : envoyer les données au format JSON
-    });
-});
-
-// Créer une API pour enregistrer les données utilisateur
-app.post('/register', (req, res) => {
-    const { email, username, password } = req.body;
-    if (!email || !username || !password) { // Correction : valider les données reçues
-        res.status(400).json({ error: 'Données manquantes' });
-        return;
-    }
-    const query = `INSERT INTO utilisateur (email, username, password) VALUES ('${email}', '${username}', '${password}')`;
+//         }
+//         res.json(rows); // Correction : envoyer les données au format JSON
+//     });
+// });
+app.get('/utilisateurs', (req, res) => {
+    const query = 'SELECT * FROM utilisateur';
     connection.query(query, (err, result) => {
-        if (err) {
-            console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
-            res.status(500).json({ error: 'Erreur interne du serveur' });
-            return;
-        }
-        res.status(201).json({ message: 'Utilisateur enregistré avec succès' }); // Correction : renvoyer une réponse avec un code 201
+      if (err) {
+        console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+        return;
+      }
+      res.status(200).json(result);
     });
+  });
+  
+// Créer une API pour enregistrer les données utilisateur
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/register', (req, res) => {
+  if (!req.body.email || !req.body.username || !req.body.password) {
+    res.status(400).json({ error: 'Données manquantes' });
+    return;
+  }
+  const query = `INSERT INTO utilisateur (email, username, password) VALUES ('${req.body.email}', '${req.body.username}', '${req.body.password}')`;
+  connection.query(query, (err, result) => {
+    if (err) {
+      console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+      return;
+    }
+    res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
+  });
 });
 /************* 
  * sk_test_51MwFg1GRr5LN8XFFpv4lyuMd4hZRsQhBVp1xwXPMLu9GSPix42hk1KFyfeLHuZ7mxDOsSB1q4mxzHFt4ZRiF7UQm00RAuZhvJV
@@ -94,6 +118,66 @@ app.post('/login', (req, res) => {
         }
     );
 });
+app.put('/utilisateurs/:id', (req, res) => {
+    const id = req.params.id;
+    const { email, username, password } = req.body;
+  
+    const query = `UPDATE utilisateur SET email = '${email}', username = '${username}', password = '${password}' WHERE id = ${id}`;
+  
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+        return;
+      }
+  
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: `Aucun utilisateur trouvé avec l'ID ${id}` });
+        return;
+      }
+  
+      res.status(200).json({ message: 'Utilisateur modifié avec succès' });
+    });
+  });
+  app.post('/admin/usercreate', (req, res) => {
+    const { email, username, PASSWORD } = req.body;
+  
+    const query = `INSERT INTO utilisateur (email, username, PASSWORD) VALUES ('${email}', '${username}', '${PASSWORD}')`;
+  
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+        return;
+      }
+  
+      res.status(201).json({ message: 'Utilisateur créé avec succès' });
+    });
+  });
+  
+  // Créer une API pour supprimer un utilisateur
+app.delete('/utilisateurs/:id', (req, res) => {
+    const id = req.params.id;
+  
+    const query = `DELETE FROM utilisateur WHERE id = ${id}`;
+  
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.error('Erreur lors de l\'exécution de la requête : ' + err.stack);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
+        return;
+      }
+  
+      if (result.affectedRows === 0) {
+        // L'utilisateur n'a pas été trouvé
+        res.status(404).json({ message: 'Utilisateur non trouvé' });
+      } else {
+        // L'utilisateur a été supprimé avec succès
+        res.status(200).json({ message: 'Utilisateur supprimé avec succès' });
+      }
+    });
+  });
+  
 const YOUR_DOMAIN = 'http://localhost:3000';
 
 
@@ -154,7 +238,19 @@ app.post('/commande', async (req, res) => {
     }
 });
 
-
+app.get('/admin/listecommande', (req, res) => {
+    const sql = "SELECT * FROM commande";
+    connection.query(sql, function (err, result) {
+      if (err) {
+        console.error("Erreur lors de la récupération des commandes :", err);
+        res.status(500).json({ error: 'Une erreur s\'est produite lors de la récupération des commandes' });
+      } else {
+        console.log("Commandes récupérées de la base de données :", result);
+        res.status(200).json(result);
+      }
+    });
+  });
+  
 
 
 
@@ -162,6 +258,12 @@ app.post('/commande', async (req, res) => {
 
 
 // Démarrer le serveur sur le port 3002
-app.listen(3000, () => {
-    console.log('Serveur démarré ');
+app.listen(port, () => {
+    console.log('Serveur démarré ' + port);
 });
+// Fermer la connexion à la base de données lorsque l'application est arrêtée
+// process.on('SIGINT', () => {
+//     connection.end();
+//     console.log('Connexion à la base de données fermée avec succès.');
+//     process.exit(0);
+//     });
